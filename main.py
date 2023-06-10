@@ -60,7 +60,7 @@ def play():
         player.move(dx,dy)
     
         #Affichage du personnage sur l'écran
-        player.draw(SCREEN)
+        player.draw(SCREEN,0)
     
         for button in [EXIT_BUTTON, BACK_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
