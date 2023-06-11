@@ -75,6 +75,7 @@ def play():
     
         #Affichage du personnage sur l'écran
         player.draw(SCREEN,0)
+<<<<<<< HEAD
         
         #Affichage de la barre de vie
         health_bar.draw(SCREEN)
@@ -82,6 +83,8 @@ def play():
         #Affichage de la map
         for room in dungeon:
             room.draw()
+=======
+>>>>>>> 3ff03e4022ce7f698dde009cde4a25d6f5982d36
     
         for button in [EXIT_BUTTON, BACK_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
