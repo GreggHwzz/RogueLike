@@ -1,15 +1,19 @@
 import pygame, sys
+import pygame.sprite
 import constants
 from button import Button
 from character import Character
 from healthbar import HealthBar
 from dungeon import Tilemap
+from bullet import Bullet
 
 pygame.init()
 
 ecran_info = pygame.display.Info()
 largeur = ecran_info.current_w
 hauteur = ecran_info.current_h
+
+#bullet_group=pygame.sprite.Group()
 
 SCREEN = pygame.display.set_mode((largeur, hauteur), pygame.FULLSCREEN)
 pygame.display.set_caption("Menu")
@@ -31,6 +35,7 @@ def play():
     moving_right = False
     moving_up = False
     moving_down = False
+    shoot=False
 
     #Création de personnage
     player = Character(SCREEN.get_width()//2,SCREEN.get_height()//2)
@@ -69,19 +74,28 @@ def play():
             dy = -constants.SPEED
         if moving_down == True:
             dy = constants.SPEED
+        if shoot == True:
+            
+            player.shoot()
+        
+
     
         #Mouvement du personnage 
         player.move(dx,dy)
     
         #Affichage du personnage sur l'écran
         player.draw(SCREEN,0)
+        player.update()
         
+        player.bullets.update()
+        player.bullets.draw(SCREEN)
+
         #Affichage de la barre de vie
         health_bar.draw(SCREEN)
         
         #Affichage de la map
         #for room in dungeon:
-        #    room.draw()
+        #room.draw()
     
         for button in [EXIT_BUTTON, BACK_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
@@ -109,6 +123,8 @@ def play():
                     moving_down = True
                 if event.key == pygame.K_d:
                     moving_right = True
+                if event.key == pygame.K_SPACE:
+                    shoot = True
         
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_z:
@@ -119,6 +135,8 @@ def play():
                     moving_down = False
                 if event.key == pygame.K_d:
                     moving_right = False
+                if event.key == pygame.K_SPACE:
+                    shoot = False
                 
         pygame.display.update()
     
