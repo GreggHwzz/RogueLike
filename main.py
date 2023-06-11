@@ -2,6 +2,8 @@ import pygame, sys
 import constants
 from button import Button
 from character import Character
+from healthbar import HealthBar
+from dungeon import Tilemap
 
 pygame.init()
 
@@ -31,7 +33,19 @@ def play():
     moving_down = False
 
     #Création de personnage
-    player = Character(100,100)
+    player = Character(SCREEN.get_width()//2,SCREEN.get_height()//2)
+    
+    #Création de la barre de vie
+    health_bar = HealthBar(50,SCREEN.get_height()-75,200,20,100)
+    
+    # Création de la carte
+   
+    dungeon = []
+    for row in range(3):
+        for col in range(3):
+            x = col * (constants.ROOM_SIZE + constants.WALL_SIZE)
+            y = row * (constants.ROOM_SIZE + constants.WALL_SIZE)
+            dungeon.append(Tilemap(x, y))
     
     while True:
         clock.tick(constants.FPS)
@@ -60,7 +74,14 @@ def play():
         player.move(dx,dy)
     
         #Affichage du personnage sur l'écran
-        player.draw(SCREEN)
+        player.draw(SCREEN,0)
+        
+        #Affichage de la barre de vie
+        health_bar.draw(SCREEN)
+        
+        #Affichage de la map
+        for room in dungeon:
+            room.draw()
     
         for button in [EXIT_BUTTON, BACK_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
@@ -112,7 +133,7 @@ def options():
         SCREEN.blit(OPTIONS_TEXT, OPTIONS_RECT)
 
         OPTIONS_BACK = Button(image=None, pos=(SCREEN.get_width()//2, 700), 
-                            text_input="BACK", font=get_font(75), base_color="White", hovering_color="Green")
+                            text_input="RETOUR", font=get_font(75), base_color="White", hovering_color="Green")
         
         MUSIC_OFF = Button(image=None, pos=(600,460), 
                             text_input="MUSIC OFF", font=get_font(75), base_color="Brown", hovering_color="RED")
@@ -148,11 +169,11 @@ def main_menu():
         MENU_RECT = MENU_TEXT.get_rect(center=(SCREEN.get_width()//2,200))
 
         PLAY_BUTTON = Button(image=pygame.image.load("assets/Play Rect.png"), pos=(SCREEN.get_width()//2, ((SCREEN.get_height()//2)-100)), 
-                            text_input="PLAY", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
+                            text_input="COMMENCER", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
         OPTIONS_BUTTON = Button(image=pygame.image.load("assets/Options Rect.png"), pos=(SCREEN.get_width()//2, ((SCREEN.get_height()//2)+150)), 
                             text_input="OPTIONS", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
-        QUIT_BUTTON = Button(image=pygame.image.load("assets/Quit Rect.png"), pos=(SCREEN.get_width()//2,((SCREEN.get_height()//2)+400)), 
-                            text_input="QUIT", font=get_font(75), base_color="#d7fcd4", hovering_color="Red")
+        QUIT_BUTTON = Button(image=pygame.image.load("assets/Options Rect.png"), pos=(SCREEN.get_width()//2,((SCREEN.get_height()//2)+400)), 
+                            text_input="QUITTER", font=get_font(75), base_color="#d7fcd4", hovering_color="Red")
 
         SCREEN.blit(MENU_TEXT, MENU_RECT)
 
