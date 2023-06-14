@@ -52,18 +52,18 @@ class Character():
             self.direction =-1
 
     def shoot(self):
-        if self.shoot_cooldown==0:
-            self.shoot_cooldown=20
-            bullet=None
-            if self.direction==1:
-                bullet=Bullet(self.rect.centerx + (self.rect.size[0]*0.3 ), self.rect.centery - 13, self.direction)
-                
-            if self.direction==-1:
-                bullet=Bullet(self.rect.centerx - (self.rect.size[0]*0.6 ), self.rect.centery - 13, self.direction)
-            if bullet is not None:  # Vérification si bullet a été défini
-                self.bullets.add(bullet)
-        
-
+        if self.shoot_cooldown == 0:
+            self.shoot_cooldown = 20
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            direction_x = mouse_x - self.rect.centerx
+            direction_y = mouse_y - self.rect.centery
+            distance = math.sqrt(direction_x ** 2 + direction_y ** 2)
+            if distance > 0:
+                direction_x /= distance
+                direction_y /= distance
+            bullet = Bullet(self.rect.centerx, self.rect.centery, (direction_x, direction_y))
+            self.bullets.add(bullet)
+    
     def update(self):
         if self.shoot_cooldown>0:
             self.shoot_cooldown-=1
