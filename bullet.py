@@ -6,7 +6,7 @@ class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y, direction):
         super().__init__()
         self.speed = 10
-        self.image = pygame.transform.scale(pygame.image.load("assets/bullet.png").convert_alpha(), (20, 20))
+        self.image = pygame.transform.scale(pygame.image.load("assets/boulebleue.png").convert_alpha(), (13, 13))
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
         self.direction = direction
@@ -19,4 +19,5 @@ class Bullet(pygame.sprite.Sprite):
             self.kill()  # Détruit la balle si elle quitte l'écran
 
     def draw(self, surface):
+       
         surface.blit(self.image, self.rect)
