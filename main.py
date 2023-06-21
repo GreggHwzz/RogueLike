@@ -6,6 +6,8 @@ from character import Character
 from healthbar import HealthBar
 from dungeon import Tilemap
 from bullet import Bullet
+from enemy import Enemy
+from items import Item
 
 pygame.init()
 
@@ -39,9 +41,14 @@ def play():
 
     #Création de personnage
     player = Character(SCREEN.get_width()//2,SCREEN.get_height()//2)
+    enemy= Enemy(SCREEN.get_width()-20,SCREEN.get_height()-20)
     
-    #Création de la barre de vie
-    health_bar = HealthBar(50,SCREEN.get_height()-75,200,20,100)
+    #Création d'items
+    health_potion= Item(SCREEN.get_width()//2,SCREEN.get_height()//2, "health", "assets/potion.png")
+    
+
+
+
     
     # Création de la carte
    
@@ -82,16 +89,22 @@ def play():
     
         #Mouvement du personnage 
         player.move(dx,dy)
+        enemy.move(player)
     
         #Affichage du personnage sur l'écran
         player.draw(SCREEN,0)
         player.update()
         
+        enemy.draw(SCREEN)
         player.bullets.update()
         player.bullets.draw(SCREEN)
 
         #Affichage de la barre de vie
-        health_bar.draw(SCREEN)
+        player.healthbar.draw(SCREEN)
+
+        #Affichage des items 
+        health_potion.draw(SCREEN)
+        health_potion.effect(player)
         
         #Affichage de la map
         #for room in dungeon:
@@ -123,7 +136,9 @@ def play():
                     moving_down = True
                 if event.key == pygame.K_d:
                     moving_right = True
-
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                shoot = True
+        
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_z:
                     moving_up = False
@@ -133,13 +148,9 @@ def play():
                     moving_down = False
                 if event.key == pygame.K_d:
                     moving_right = False
-            
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                shoot= True
-            elif event.type == pygame.MOUSEBUTTONUP:
-                shoot= False
-            
-            
+            if event.type == pygame.MOUSEBUTTONUP:
+                shoot = False
+                
         pygame.display.update()
     
 def options():
