@@ -8,7 +8,12 @@ class HealthBar():
         self.h = h
         self.hp = max_hp
         self.max_hp = max_hp
-    
+
+    def add_hp(self, amount):
+        self.hp += amount
+        self.hp = min(self.hp, self.max_hp)
+
+        
     def draw(self, surface):
         ratio=self.hp/self.max_hp
         pygame.draw.rect(surface,"RED",(self.x,self.y,self.w,self.h))

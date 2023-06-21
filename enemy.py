@@ -50,8 +50,8 @@ class Enemy(object):
             dy /= distance
             self.is_moving = True
 
-            self.rect.x += dx * 3  # Vitesse de déplacement de l'ennemi
-            self.rect.y += dy * 3  # Vitesse de déplacement de l'ennemi
+            self.rect.x += dx    # Vitesse de déplacement de l'ennemi
+            self.rect.y += dy   # Vitesse de déplacement de l'ennemi
         if dx > 0:
             self.direction = 1
         elif dx < 0:

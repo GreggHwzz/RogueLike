@@ -12,15 +12,19 @@ class Item():
         self.type=type    
         self.image = pygame.transform.scale(pygame.image.load(image).convert_alpha(),(50,35))
 
+ 
     def effect(self,player):
-        if (type=="health"):
+        if (self.type=="health"):
             dx = player.rect.centerx - self.rect.centerx
             dy = player.rect.centery- self.rect.centery
             distance = math.sqrt(dx ** 2 + dy ** 2)
-            print(self.rect.centerx, self.rect.centery)
-            if distance<=2:
-                print("fck")
-                player.healthbar.hp-=10
+            
+            if distance<=20:
+             
+                player.healthbar.add_hp(30)
+         
+                return True
+        return False 
     
     def draw(self,surface):
         

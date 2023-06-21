@@ -44,7 +44,7 @@ def play():
     enemy= Enemy(SCREEN.get_width()-20,SCREEN.get_height()-20)
     
     #Création d'items
-    health_potion= Item(SCREEN.get_width()//2,SCREEN.get_height()//2, "health", "assets/potion.png")
+    health_potion= Item(SCREEN.get_width()-100,100, "health", "assets/potion.png")
     
 
 
@@ -103,9 +103,12 @@ def play():
         player.healthbar.draw(SCREEN)
 
         #Affichage des items 
-        health_potion.draw(SCREEN)
-        health_potion.effect(player)
-        
+        if (health_potion != None):
+                if(health_potion.effect(player)): 
+                    del health_potion
+                    health_potion = None
+                else:  health_potion.draw(SCREEN)
+            
         #Affichage de la map
         #for room in dungeon:
         #room.draw()
