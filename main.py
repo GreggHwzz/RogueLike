@@ -123,9 +123,7 @@ def play():
                     moving_down = True
                 if event.key == pygame.K_d:
                     moving_right = True
-                if event.key == pygame.K_SPACE:
-                    shoot = True
-        
+
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_z:
                     moving_up = False
@@ -135,9 +133,13 @@ def play():
                     moving_down = False
                 if event.key == pygame.K_d:
                     moving_right = False
-                if event.key == pygame.K_SPACE:
-                    shoot = False
-                
+            
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                shoot= True
+            elif event.type == pygame.MOUSEBUTTONUP:
+                shoot= False
+            
+            
         pygame.display.update()
     
 def options():
