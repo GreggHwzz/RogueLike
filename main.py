@@ -8,6 +8,7 @@ from dungeon import Tilemap
 from bullet import Bullet
 from enemy import Enemy
 from items import Item
+from player import Player
 
 pygame.init()
 
@@ -40,8 +41,8 @@ def play():
     shoot=False
 
     #Création de personnage
-    player = Character(SCREEN.get_width()//2,SCREEN.get_height()//2)
-    enemy= Enemy(SCREEN.get_width()-20,SCREEN.get_height()-20)
+    player = Player(SCREEN.get_width()//2,SCREEN.get_height()//2,100)
+    enemy= Enemy(SCREEN.get_width()-20,SCREEN.get_height()-20,100)
     
     #Création d'items
     health_potion= Item(SCREEN.get_width()-100,100, "health", "assets/potion.png")

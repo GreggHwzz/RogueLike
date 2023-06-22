@@ -3,14 +3,13 @@ import pygame.sprite
 import math
 import constants
 from healthbar import HealthBar
-class Enemy(object):
+from character import Character
+class Enemy(Character):
     walkLeft = [pygame.image.load('assets/skeleton/skeleton.png'), pygame.image.load('assets/skeleton/skeleton1.png'), pygame.image.load('assets/skeleton/skeleton2.png'), pygame.image.load('assets/skeleton/skeleton3.png'), pygame.image.load('assets/skeleton/skeleton4.png'), pygame.image.load('assets/skeleton/skeleton5.png'), pygame.image.load('assets/skeleton/skeleton6.png'), pygame.image.load('assets/skeleton/skeleton7.png')]
     walkRight = [pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton.png'), True, False), pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton1.png'), True, False), pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton2.png'), True, False), pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton3.png'), True, False), pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton4.png'), True, False), pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton5.png'), True, False), pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton6.png'), True, False),pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton7.png'), True, False)]
     
-    def __init__(self, x, y):
-        self.rect = pygame.Rect(0,0,70,70)
-        self.rect.center = (x,y)
-        self.direction=1
+    def __init__(self, x, y,  max_hp):
+        super().__init__(x,y, max_hp)
         self.animation_speed = 0.2
         self.animation_timer = 0
         self.walkCount = 0
@@ -50,8 +49,8 @@ class Enemy(object):
             dy /= distance
             self.is_moving = True
 
-            self.rect.x += dx    # Vitesse de déplacement de l'ennemi
-            self.rect.y += dy   # Vitesse de déplacement de l'ennemi
+            self.rect.x += dx *3   # Vitesse de déplacement de l'ennemi
+            self.rect.y += dy  *3 # Vitesse de déplacement de l'ennemi
         if dx > 0:
             self.direction = 1
         elif dx < 0:
