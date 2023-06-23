@@ -5,13 +5,15 @@ import constants
 from bullet import Bullet
 from healthbar import HealthBar
 from character import Character
+from enemy import Enemy
 
 class Player(Character):
     def __init__(self,x,y, max_hp):
-        super().__init__(x,y, max_hp)
+        super().__init__(x,y)
         self.image = pygame.image.load("assets/doux.png").convert_alpha()
         self.shoot_cooldown=0
         self.bullets=pygame.sprite.Group()
+        self.healthbar=HealthBar(50,850,200,20,max_hp)
 
     def draw(self,surface,frame):
         if self.direction==1:
@@ -50,6 +52,7 @@ class Player(Character):
                 direction_y /= distance
             bullet = Bullet(self.rect.centerx -10, self.rect.centery, (direction_x, direction_y))
             self.bullets.add(bullet)
+            
     
     def update(self):
         if self.shoot_cooldown>0:

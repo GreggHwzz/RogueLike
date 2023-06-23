@@ -42,7 +42,8 @@ def play():
 
     #Création de personnage
     player = Player(SCREEN.get_width()//2,SCREEN.get_height()//2,100)
-    enemy= Enemy(SCREEN.get_width()-20,SCREEN.get_height()-20,100)
+    en1= Enemy(SCREEN.get_width()-20,SCREEN.get_height()-20,100)
+    en2= Enemy(SCREEN.get_width()-100,SCREEN.get_height()-20,100)
     
     #Création d'items
     health_potion= Item(SCREEN.get_width()-100,100, "health", "assets/potion.png")
@@ -90,13 +91,25 @@ def play():
     
         #Mouvement du personnage 
         player.move(dx,dy)
-        enemy.move(player)
+        for enemy in Enemy.enemies_group:
+            if enemy!=None:
+                enemy.move(player)
+
+        #Mort enemies
+        for enemy in Enemy.enemies_group:
+            if enemy!=None:
+                if enemy.hp<=0:
+                    Enemy.enemies_group.remove(enemy)
+                    del enemy
+                    enemy=None
     
         #Affichage du personnage sur l'écran
+
         player.draw(SCREEN,0)
         player.update()
-        
-        enemy.draw(SCREEN)
+        for enemy in Enemy.enemies_group:
+            if enemy!=None:
+                enemy.draw(SCREEN)
         player.bullets.update()
         player.bullets.draw(SCREEN)
 

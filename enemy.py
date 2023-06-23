@@ -1,19 +1,26 @@
 import pygame
 import pygame.sprite
+from  pygame.sprite import Group
+
 import math
 import constants
-from healthbar import HealthBar
 from character import Character
 class Enemy(Character):
     walkLeft = [pygame.image.load('assets/skeleton/skeleton.png'), pygame.image.load('assets/skeleton/skeleton1.png'), pygame.image.load('assets/skeleton/skeleton2.png'), pygame.image.load('assets/skeleton/skeleton3.png'), pygame.image.load('assets/skeleton/skeleton4.png'), pygame.image.load('assets/skeleton/skeleton5.png'), pygame.image.load('assets/skeleton/skeleton6.png'), pygame.image.load('assets/skeleton/skeleton7.png')]
     walkRight = [pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton.png'), True, False), pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton1.png'), True, False), pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton2.png'), True, False), pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton3.png'), True, False), pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton4.png'), True, False), pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton5.png'), True, False), pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton6.png'), True, False),pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton7.png'), True, False)]
-    
+    enemies_group = pygame.sprite.Group()
     def __init__(self, x, y,  max_hp):
-        super().__init__(x,y, max_hp)
+        super().__init__(x,y)
         self.animation_speed = 0.2
         self.animation_timer = 0
         self.walkCount = 0
         self.is_moving = False
+        self.hp = max_hp
+        Enemy.enemies_group.add(self)
+
+
+        
+        
 
     
     def draw(self, surface):
@@ -31,6 +38,7 @@ class Enemy(Character):
                 surface.blit(self.walkLeft[self.walkCount], self.rect)
         else:
             surface.blit(self.walkLeft[0], self.rect)
+        
             
     def damages(self, player):
         
@@ -49,12 +57,13 @@ class Enemy(Character):
             dy /= distance
             self.is_moving = True
 
-            self.rect.x += dx *3   # Vitesse de déplacement de l'ennemi
-            self.rect.y += dy  *3 # Vitesse de déplacement de l'ennemi
+            self.rect.x += dx    # Vitesse de déplacement de l'ennemi
+            self.rect.y += dy   # Vitesse de déplacement de l'ennemi
         if dx > 0:
             self.direction = 1
         elif dx < 0:
-            self.direction = -1
-    
+            self.direction =-1
+
+       
     
 

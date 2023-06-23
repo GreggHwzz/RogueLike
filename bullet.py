@@ -1,7 +1,9 @@
 import pygame
 import pygame.sprite
+
 import constants
 import math
+from enemy import Enemy
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y, direction):
         super().__init__()
@@ -17,7 +19,15 @@ class Bullet(pygame.sprite.Sprite):
 
         if self.rect.right < 0 or self.rect.left > constants.SCREEN_WIDTH:
             self.kill()  # Détruit la balle si elle quitte l'écran
+        self.damages()
 
     def draw(self, surface):
-       
         surface.blit(self.image, self.rect)
+
+    def damages(self):
+        enemy_hit_list = pygame.sprite.spritecollide(self, Enemy.enemies_group, False)
+        for enemy in enemy_hit_list:
+            enemy.hp -= 20     
+            self.kill()
+
+    
