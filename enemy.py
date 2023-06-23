@@ -5,6 +5,7 @@ from  pygame.sprite import Group
 import math
 import constants
 from character import Character
+
 class Enemy(Character):
     walkLeft = [pygame.image.load('assets/skeleton/skeleton.png'), pygame.image.load('assets/skeleton/skeleton1.png'), pygame.image.load('assets/skeleton/skeleton2.png'), pygame.image.load('assets/skeleton/skeleton3.png'), pygame.image.load('assets/skeleton/skeleton4.png'), pygame.image.load('assets/skeleton/skeleton5.png'), pygame.image.load('assets/skeleton/skeleton6.png'), pygame.image.load('assets/skeleton/skeleton7.png')]
     walkRight = [pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton.png'), True, False), pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton1.png'), True, False), pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton2.png'), True, False), pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton3.png'), True, False), pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton4.png'), True, False), pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton5.png'), True, False), pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton6.png'), True, False),pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton7.png'), True, False)]
