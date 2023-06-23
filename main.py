@@ -112,6 +112,7 @@ def play():
         dy = 0
     
         if moving_left == True:
+            
             dx = -constants.SPEED
         if moving_right == True:
             dx = constants.SPEED
@@ -146,7 +147,6 @@ def play():
         #Affichage du personnage sur l'écran
 
         player.draw(SCREEN,0)
-        
         player.update()
         for enemy in Enemy.enemies_group:
             if enemy!=None:
@@ -191,18 +191,32 @@ def play():
                 if event.key == pygame.K_d and position_y < dungeon.hauteur_donjon - 1 and donjon[position_x][position_y + 1] != 0:
                     moving_right = True
                     
+                    player.is_moving=True
+                if event.key == pygame.K_q:
+                    moving_left = True
+                    player.is_moving=True
+                if event.key == pygame.K_s:
+                    moving_down = True
+                    player.is_moving=True
+                if event.key == pygame.K_d:
+                    moving_right = True
+                    player.is_moving=True
             if event.type == pygame.MOUSEBUTTONDOWN:
                 shoot = True
         
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_z:
                     moving_up = False
+                    player.is_moving=False
                 if event.key == pygame.K_q:
                     moving_left = False
+                    player.is_moving=False
                 if event.key == pygame.K_s:
                     moving_down = False
+                    player.is_moving=False
                 if event.key == pygame.K_d:
                     moving_right = False
+                    player.is_moving=False
             if event.type == pygame.MOUSEBUTTONUP:
                 shoot = False
         
