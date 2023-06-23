@@ -10,6 +10,7 @@ from bullet import Bullet
 from enemy import Enemy
 from items import Item
 from player import Player
+from pygame.locals import *
 
 pygame.init()
 
@@ -20,7 +21,7 @@ hauteur = ecran_info.current_h
 #bullet_group=pygame.sprite.Group()
 
 SCREEN = pygame.display.set_mode((largeur, hauteur))
-pygame.display.set_caption("Menu")
+pygame.display.set_caption("RogueLike Prototype")
 
 MUSIC = pygame.mixer.music.load('music/main_theme.mp3')
 pygame.mixer.music.set_volume(0.08)
@@ -219,6 +220,7 @@ def play():
         pygame.display.flip()
     
 def options():
+    
     while True:
         OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
 
@@ -257,12 +259,32 @@ def options():
         
     
 def main_menu():
+    
+      
+    def update_text():
+        global font 
+        font = pygame.font.Font("assets/font.ttf",90) 
+        text_color = "#057DC1"
+        text = "RogueLike Prototype"
+        text_surface = font.render(text, True, text_color)
+        text_rect = text_surface.get_rect()
+
+    # Positionnez le texte au centre de l'écran
+        text_rect.center = (SCREEN.get_width() // 2, 200)
+
+    # Redimensionnez le texte en fonction de la taille de l'écran
+        if text_rect.width > SCREEN.get_width() or text_rect.height > SCREEN.get_height():
+            new_font_size = int(font.size(text)[1] * min(SCREEN.get_width() / text_rect.width, SCREEN.get_height() / text_rect.height))
+            font = pygame.font.Font("assets/font.ttf", new_font_size)
+            text_surface = font.render(text, True, text_color)
+            text_rect = text_surface.get_rect()
+            text_rect.center = (SCREEN.get_width() // 2, 200)
+
+        return text_surface, text_rect
+
     while True:
         SCREEN.fill((1,0,0))
         MENU_MOUSE_POS = pygame.mouse.get_pos()
-
-        MENU_TEXT = get_font(100).render("Efreyan Adventures", True, "#057DC1")
-        MENU_RECT = MENU_TEXT.get_rect(center=(SCREEN.get_width()//2,200))
 
         PLAY_BUTTON = Button(image=pygame.image.load("assets/Play Rect.png"), pos=(SCREEN.get_width()//2, ((SCREEN.get_height()//2)-100)), 
                             text_input="COMMENCER", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
@@ -271,7 +293,10 @@ def main_menu():
         QUIT_BUTTON = Button(image=pygame.image.load("assets/Options Rect.png"), pos=(SCREEN.get_width()//2,((SCREEN.get_height()//2)+400)), 
                             text_input="QUITTER", font=get_font(75), base_color="#d7fcd4", hovering_color="Red")
 
-        SCREEN.blit(MENU_TEXT, MENU_RECT)
+        text_surface, text_rect = update_text()
+
+    # Affiche le texte sur l'écran
+        SCREEN.blit(text_surface, text_rect)
 
         for button in [PLAY_BUTTON, OPTIONS_BUTTON, QUIT_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
