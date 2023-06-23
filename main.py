@@ -1,10 +1,11 @@
 import pygame, sys
 import pygame.sprite
 import constants
+import dungeon
+import random
 from button import Button
 from character import Character
 from healthbar import HealthBar
-from dungeon import Tilemap
 from bullet import Bullet
 from enemy import Enemy
 from items import Item
@@ -18,7 +19,7 @@ hauteur = ecran_info.current_h
 
 #bullet_group=pygame.sprite.Group()
 
-SCREEN = pygame.display.set_mode((largeur, hauteur), pygame.FULLSCREEN)
+SCREEN = pygame.display.set_mode((largeur, hauteur))
 pygame.display.set_caption("Menu")
 
 MUSIC = pygame.mixer.music.load('music/main_theme.mp3')
@@ -27,7 +28,9 @@ pygame.mixer.music.play(-1)
 
 clock = pygame.time.Clock()
 
-def get_font(size): # Returns Press-Start-2P in the desired size
+donjon = [[0] * dungeon.hauteur_donjon for _ in range(dungeon.largeur_donjon)]
+
+def get_font(size): 
     return pygame.font.Font("assets/font.ttf", size)
 
 def play():
@@ -47,19 +50,52 @@ def play():
     
     #Création d'items
     health_potion= Item(SCREEN.get_width()-100,100, "health", "assets/potion.png")
+     
+    def generate_donjon():
+    # Génération des pièces
+        pieces = []
+        for _ in range(8):
+            piece_largeur = random.randint(4, 10)
+            piece_hauteur = random.randint(4, 10)
+            piece_x = random.randint(1, dungeon.largeur_donjon - piece_largeur - 1)
+            piece_y = random.randint(1, dungeon.hauteur_donjon - piece_hauteur - 1)
+            pieces.append((piece_x, piece_y, piece_largeur, piece_hauteur))
+
+        for piece in pieces:
+            piece_x, piece_y, piece_largeur, piece_hauteur = piece
+            for i in range(piece_x, piece_x + piece_largeur):
+                for j in range(piece_y, piece_y + piece_hauteur):
+                    donjon[i][j] = 1
+
+    # Génération des couloirs
+        for i in range(len(pieces) - 1):
+            piece_x, piece_y, piece_largeur, piece_hauteur = pieces[i]
+            next_piece_x, next_piece_y, next_piece_largeur, next_piece_hauteur = pieces[i + 1]
+            current_x = piece_x + random.randint(0, piece_largeur - 1)
+            current_y = piece_y + random.randint(0, piece_hauteur - 1)
+            target_x = next_piece_x + random.randint(0, next_piece_largeur - 1)
+            target_y = next_piece_y + random.randint(0, next_piece_hauteur - 1)
+
+            while current_x != target_x or current_y != target_y:
+
+                if current_x < 0 or current_x >= dungeon.largeur_donjon or current_y < 0 or current_y >= dungeon.hauteur_donjon:
+                    break
+
+                donjon[current_x][current_y] = 1 
+                
+                if current_x < target_x:
+                    current_x += 1
+                elif current_x > target_x:
+                    current_x -= 1
+                elif current_y < target_y:
+                    current_y += 1
+                elif current_y > target_y:
+                    current_y -= 1
+
+    generate_donjon()
     
-
-
-
-    
-    # Création de la carte
-   
-    dungeon = []
-    for row in range(3):
-        for col in range(3):
-            x = col * (constants.ROOM_SIZE + constants.WALL_SIZE)
-            y = row * (constants.ROOM_SIZE + constants.WALL_SIZE)
-            dungeon.append(Tilemap(x, y))
+    position_x = random.randint(0, dungeon.largeur_donjon - 1)
+    position_y = random.randint(0, dungeon.hauteur_donjon - 1)
     
     while True:
         clock.tick(constants.FPS)
@@ -86,8 +122,6 @@ def play():
         if shoot == True:
             
             player.shoot()
-        
-
     
         #Mouvement du personnage 
         player.move(dx,dy)
@@ -102,10 +136,17 @@ def play():
                     Enemy.enemies_group.remove(enemy)
                     del enemy
                     enemy=None
-    
+                    
+         # Dessin du donjon
+        for i in range(dungeon.largeur_donjon):
+            for j in range(dungeon.hauteur_donjon):
+                if donjon[i][j] == 1:
+                    pygame.draw.rect(SCREEN, constants.WHITE, (i * dungeon.taille_cellule, j * dungeon.taille_cellule, dungeon.taille_cellule, dungeon.taille_cellule))
+                    
         #Affichage du personnage sur l'écran
 
         player.draw(SCREEN,0)
+        
         player.update()
         for enemy in Enemy.enemies_group:
             if enemy!=None:
@@ -122,11 +163,7 @@ def play():
                     del health_potion
                     health_potion = None
                 else:  health_potion.draw(SCREEN)
-            
-        #Affichage de la map
-        #for room in dungeon:
-        #room.draw()
-    
+
         for button in [EXIT_BUTTON, BACK_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
             button.update(SCREEN)
@@ -145,14 +182,15 @@ def play():
                     main_menu()
             
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_z:
+                if event.key == pygame.K_z and position_y > 0 and donjon[position_x][position_y - 1] != 0:
                     moving_up = True
-                if event.key == pygame.K_q:
+                if event.key == pygame.K_q and position_x > 0 and donjon[position_x - 1][position_y] != 0:
                     moving_left = True
-                if event.key == pygame.K_s:
+                if event.key == pygame.K_s and position_x < dungeon.largeur_donjon - 1 and donjon[position_x + 1][position_y] != 0:
                     moving_down = True
-                if event.key == pygame.K_d:
+                if event.key == pygame.K_d and position_y < dungeon.hauteur_donjon - 1 and donjon[position_x][position_y + 1] != 0:
                     moving_right = True
+                    
             if event.type == pygame.MOUSEBUTTONDOWN:
                 shoot = True
         
@@ -167,8 +205,10 @@ def play():
                     moving_right = False
             if event.type == pygame.MOUSEBUTTONUP:
                 shoot = False
+        
+       
                 
-        pygame.display.update()
+        pygame.display.flip()
     
 def options():
     while True:
