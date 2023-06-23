@@ -10,7 +10,7 @@ class Character(pygame.sprite.Sprite):
          pygame.sprite.Sprite.__init__(self)
          self.rect = pygame.Rect(0,0,70,70)
          self.rect.center = (x,y)
-         self.image = pygame.image.load("assets/doux.png").convert_alpha()
+         
          self.direction=1
          
          
