@@ -1,3 +1,4 @@
+import json
 import pygame, sys
 import pygame.sprite
 import constants
@@ -9,7 +10,7 @@ from bullet import Bullet
 from enemy import Enemy
 from items import Item
 from player import Player
-
+from dungeonn import Dungeon
 pygame.init()
 
 ecran_info = pygame.display.Info()
@@ -39,6 +40,26 @@ def play():
     moving_up = False
     moving_down = False
     shoot=False
+
+    
+    
+    with open('maps.json') as f:
+        data = json.load(f)
+        m = 0
+        for map in data:
+            constants.MAPS.append([])
+            n = 0
+            for j in range(constants.TILESIZE):
+                constants.MAPS[m].append([])
+                for i in range(constants.TILESIZE):
+                    constants.MAPS[m][j].append(data.get(str(map))[n])
+                    n += 1
+            m += 1
+
+    donjoonn = Dungeon()
+    donjoonn.new(5)
+    
+
 
     #Création de personnage
     player = Player(SCREEN.get_width()//2,SCREEN.get_height()//2,100)
@@ -105,7 +126,7 @@ def play():
                     enemy=None
     
         #Affichage du personnage sur l'écran
-
+        donjoonn.draw(SCREEN)
         player.draw(SCREEN)
         player.update()
         for enemy in Enemy.enemies_group:
@@ -113,6 +134,8 @@ def play():
                 enemy.draw(SCREEN)
         player.bullets.update()
         player.bullets.draw(SCREEN)
+
+        
 
         #Affichage de la barre de vie
         player.healthbar.draw(SCREEN)
@@ -177,7 +200,7 @@ def play():
             if event.type == pygame.MOUSEBUTTONUP:
                 shoot = False
                 
-        pygame.display.update()
+        pygame.display.flip()
     
 def options():
     while True:
