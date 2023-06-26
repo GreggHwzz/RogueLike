@@ -5,13 +5,12 @@ import constants
 from bullet import Bullet
 from healthbar import HealthBar
 from character import Character
-from enemy import Enemy
 
 class Player(Character):
     walkRight = [pygame.image.load('assets/dinosaure/doux.png'), pygame.image.load('assets/dinosaure/doux2.png'), pygame.image.load('assets/dinosaure/doux3.png'), pygame.image.load('assets/dinosaure/doux4.png'), pygame.image.load('assets/dinosaure/doux5.png'), pygame.image.load('assets/dinosaure/doux6.png'), pygame.image.load('assets/dinosaure/doux7.png'), pygame.image.load('assets/dinosaure/doux8.png'),pygame.image.load('assets/dinosaure/doux9.png'), pygame.image.load('assets/dinosaure/doux10.png'), pygame.image.load('assets/dinosaure/doux11.png'), pygame.image.load('assets/dinosaure/doux12.png'), pygame.image.load('assets/dinosaure/doux13.png')]
     walkLeft = [pygame.transform.flip(pygame.image.load('assets/dinosaure/doux.png'), True, False), pygame.transform.flip(pygame.image.load('assets/dinosaure/doux2.png'), True, False), pygame.transform.flip(pygame.image.load('assets/dinosaure/doux3.png'), True, False), pygame.transform.flip(pygame.image.load('assets/dinosaure/doux4.png'), True, False), pygame.transform.flip(pygame.image.load('assets/dinosaure/doux5.png'), True, False), pygame.transform.flip(pygame.image.load('assets/dinosaure/doux6.png'), True, False), pygame.transform.flip(pygame.image.load('assets/dinosaure/doux7.png'), True, False),pygame.transform.flip(pygame.image.load('assets/dinosaure/doux8.png'), True, False),pygame.transform.flip(pygame.image.load('assets/dinosaure/doux9.png'), True, False),pygame.transform.flip(pygame.image.load('assets/dinosaure/doux10.png'), True, False),pygame.transform.flip(pygame.image.load('assets/dinosaure/doux11.png'), True, False),pygame.transform.flip(pygame.image.load('assets/dinosaure/doux12.png'), True, False),pygame.transform.flip(pygame.image.load('assets/dinosaure/doux13.png'), True, False)]
-    def __init__(self,x,y, max_hp):
-        super().__init__(x,y)
+    def __init__(self,x,y, max_hp,size):
+        super().__init__(x,y,max_hp,size)
         self.image = pygame.image.load("assets/doux.png").convert_alpha()
         self.shoot_cooldown=0
         self.bullets=pygame.sprite.Group()
@@ -20,6 +19,7 @@ class Player(Character):
         self.walkCount = 0
         self.is_moving = False
         self.healthbar=HealthBar(50,pygame.display.get_surface().get_height()-80,200,20,max_hp)
+        self.direction=1
 
     def draw(self, surface):
         if self.is_moving:
@@ -36,22 +36,6 @@ class Player(Character):
                 surface.blit(pygame.transform.scale(self.walkLeft[self.walkCount],(40,40)), self.rect)
         else:
             surface.blit(pygame.transform.scale(self.walkLeft[0],(40,40)), self.rect)
-            
-
-    def move(self,dx,dy):
-          
-        if dx != 0 and dy != 0:
-            
-            dx *= math.sqrt(2)/2
-            dy *= math.sqrt(2)/2
-            
-        self.rect.x += dx
-        self.rect.y += dy
-
-        if dx>0:
-            self.direction=1
-        elif dx<0:
-            self.direction =-1
 
     def shoot(self):
         if self.shoot_cooldown == 0:
@@ -66,7 +50,6 @@ class Player(Character):
             bullet = Bullet(self.rect.centerx -10, self.rect.centery, (direction_x, direction_y))
             self.bullets.add(bullet)
             
-    
     def update(self):
         if self.shoot_cooldown>0:
             self.shoot_cooldown-=1

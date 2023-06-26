@@ -10,19 +10,13 @@ class Enemy(Character):
     walkLeft = [pygame.image.load('assets/skeleton/skeleton.png'), pygame.image.load('assets/skeleton/skeleton1.png'), pygame.image.load('assets/skeleton/skeleton2.png'), pygame.image.load('assets/skeleton/skeleton3.png'), pygame.image.load('assets/skeleton/skeleton4.png'), pygame.image.load('assets/skeleton/skeleton5.png'), pygame.image.load('assets/skeleton/skeleton6.png'), pygame.image.load('assets/skeleton/skeleton7.png')]
     walkRight = [pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton.png'), True, False), pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton1.png'), True, False), pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton2.png'), True, False), pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton3.png'), True, False), pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton4.png'), True, False), pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton5.png'), True, False), pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton6.png'), True, False),pygame.transform.flip(pygame.image.load('assets/skeleton/skeleton7.png'), True, False)]
     enemies_group = pygame.sprite.Group()
-    def __init__(self, x, y,  max_hp):
-        super().__init__(x,y)
+    def __init__(self, x, y,  max_hp,size,image):
+        super().__init__(x,y, max_hp, size, image)
         self.animation_speed = 0.2
         self.animation_timer = 0
         self.walkCount = 0
         self.is_moving = False
         self.hp = max_hp
-        Enemy.enemies_group.add(self)
-
-
-        
-        
-
     
     def draw(self, surface):
         if self.is_moving:
