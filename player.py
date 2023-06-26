@@ -6,7 +6,7 @@ from bullet import Bullet
 from healthbar import HealthBar
 from character import Character
 from enemy import Enemy
-
+from sprites import Wall, Floor
 class Player(Character):
     walkRight = [pygame.image.load('assets/dinosaure/doux.png'), pygame.image.load('assets/dinosaure/doux2.png'), pygame.image.load('assets/dinosaure/doux3.png'), pygame.image.load('assets/dinosaure/doux4.png'), pygame.image.load('assets/dinosaure/doux5.png'), pygame.image.load('assets/dinosaure/doux6.png'), pygame.image.load('assets/dinosaure/doux7.png'), pygame.image.load('assets/dinosaure/doux8.png'),pygame.image.load('assets/dinosaure/doux9.png'), pygame.image.load('assets/dinosaure/doux10.png'), pygame.image.load('assets/dinosaure/doux11.png'), pygame.image.load('assets/dinosaure/doux12.png'), pygame.image.load('assets/dinosaure/doux13.png')]
     walkLeft = [pygame.transform.flip(pygame.image.load('assets/dinosaure/doux.png'), True, False), pygame.transform.flip(pygame.image.load('assets/dinosaure/doux2.png'), True, False), pygame.transform.flip(pygame.image.load('assets/dinosaure/doux3.png'), True, False), pygame.transform.flip(pygame.image.load('assets/dinosaure/doux4.png'), True, False), pygame.transform.flip(pygame.image.load('assets/dinosaure/doux5.png'), True, False), pygame.transform.flip(pygame.image.load('assets/dinosaure/doux6.png'), True, False), pygame.transform.flip(pygame.image.load('assets/dinosaure/doux7.png'), True, False),pygame.transform.flip(pygame.image.load('assets/dinosaure/doux8.png'), True, False),pygame.transform.flip(pygame.image.load('assets/dinosaure/doux9.png'), True, False),pygame.transform.flip(pygame.image.load('assets/dinosaure/doux10.png'), True, False),pygame.transform.flip(pygame.image.load('assets/dinosaure/doux11.png'), True, False),pygame.transform.flip(pygame.image.load('assets/dinosaure/doux12.png'), True, False),pygame.transform.flip(pygame.image.load('assets/dinosaure/doux13.png'), True, False)]
@@ -44,9 +44,12 @@ class Player(Character):
             
             dx *= math.sqrt(2)/2
             dy *= math.sqrt(2)/2
-            
-        self.rect.x += dx
-        self.rect.y += dy
+        
+        if self.collide_with_walls(dx, dy):
+            print('fck')
+        else:
+            self.rect.x += dx
+            self.rect.y += dy
 
         if dx>0:
             self.direction=1
@@ -70,3 +73,9 @@ class Player(Character):
     def update(self):
         if self.shoot_cooldown>0:
             self.shoot_cooldown-=1
+    
+    def collide_with_walls(self, dx=0, dy=0):
+        for wall in Wall.walls:
+            if wall.x == self.rect.x + dx and wall.y == self.rect.y + dy:
+                return True
+        return False

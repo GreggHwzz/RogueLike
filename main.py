@@ -11,6 +11,7 @@ from enemy import Enemy
 from items import Item
 from player import Player
 from dungeonn import Dungeon
+from sprites import Floor
 pygame.init()
 
 ecran_info = pygame.display.Info()
@@ -62,7 +63,7 @@ def play():
 
 
     #Création de personnage
-    player = Player(SCREEN.get_width()//2,SCREEN.get_height()//2,100)
+    player=donjoonn.getPlayer()
     en1= Enemy(SCREEN.get_width()-20,SCREEN.get_height()-20,100)
     en2= Enemy(SCREEN.get_width()-100,SCREEN.get_height()-20,100)
     
@@ -73,14 +74,7 @@ def play():
 
 
     
-    # Création de la carte
    
-    dungeon = []
-    for row in range(3):
-        for col in range(3):
-            x = col * (constants.ROOM_SIZE + constants.WALL_SIZE)
-            y = row * (constants.ROOM_SIZE + constants.WALL_SIZE)
-            dungeon.append(Tilemap(x, y))
     
     while True:
         clock.tick(constants.FPS)
@@ -147,9 +141,7 @@ def play():
                     health_potion = None
                 else:  health_potion.draw(SCREEN)
             
-        #Affichage de la map
-        #for room in dungeon:
-        #room.draw()
+       
     
         for button in [EXIT_BUTTON, BACK_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)

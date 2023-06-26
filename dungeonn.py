@@ -1,6 +1,7 @@
 import pygame, sys, math, random, copy
 from sprites import Wall, Floor
 from tilemap import Camera
+from player import Player
 
 import constants
 
@@ -19,12 +20,15 @@ class Dungeon(object):
         self.addAdjacent()
         self.fillWall()
         self.createDungeonObject()
+        self.newPlayer()
         
        
 
     def getDungeon(self):
         return self.dungeon
 
+    def getPlayer(self):
+        return self.player
 
     # Create the dungeon
 
@@ -90,6 +94,7 @@ class Dungeon(object):
                 dungeon = self.dungeon[jd][id]
                 if dungeon:
                     dungeon = dungeon[0]
+                    
                     for j in range(len(dungeon)):
                         for i in range(len(dungeon[j])):
 
@@ -97,6 +102,7 @@ class Dungeon(object):
                             for case in dungeon[j][i]:
                                 if case == 1 or case == 2:
                                     tmp.append(Wall(i + offseti, j + offsetj))
+                                    
                                 elif case == 0:
                                     tmp.append(Floor( i + offseti, j + offsetj))
                                 
@@ -105,10 +111,21 @@ class Dungeon(object):
                 offseti += constants.TILESIZE
             offsetj += constants.TILESIZE
             offseti = 0
+            
 
     def draw(self,SCREEN):
         for sprite in Floor.floors:
             SCREEN.blit(sprite.image,  self.camera.apply(sprite))
-        for sprite in Floor.floors:
+        for sprite in Wall.walls:
             
             SCREEN.blit(sprite.image,  self.camera.apply(sprite))
+
+    def newPlayer(self):
+        print (Wall.walls)
+        dungeon = self.dungeon[self.dungeonSize // 2][self.dungeonSize // 2][0]
+        for j in range(constants.TILESIZE):
+            for i in range(constants.TILESIZE):
+                for case in dungeon[j][i]:
+                    if isinstance(case, Floor):
+                        self.player = Player(((self.dungeonSize) // 2) * constants.TILESIZE + i, ((self.dungeonSize) // 2) * constants.TILESIZE + j, 100)
+                        return
