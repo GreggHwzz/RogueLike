@@ -5,7 +5,8 @@ import constants
 from button import Button
 from character import Character
 from healthbar import HealthBar
-from dungeon import Tilemap
+
+
 from bullet import Bullet
 from enemy import Enemy
 from items import Item
@@ -129,7 +130,11 @@ def play():
         player.bullets.update()
         player.bullets.draw(SCREEN)
 
-        
+        if player.healthbar.hp <= 0:
+            GAME_OVER_TEXT = get_font(100).render("Game Over", True, constants.RED)
+            GAME_OVER_RECT = GAME_OVER_TEXT.get_rect(center=(SCREEN.get_width() // 2, 200))
+            SCREEN.blit(GAME_OVER_TEXT, GAME_OVER_RECT)
+            SCREEN.blit(pygame.transform.scale(pygame.image.load('assets/dinosaure/doux15.png'),(40,40)), player.rect)
 
         #Affichage de la barre de vie
         player.healthbar.draw(SCREEN)
