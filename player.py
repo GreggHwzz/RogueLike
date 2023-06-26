@@ -45,9 +45,8 @@ class Player(Character):
             dx *= math.sqrt(2)/2
             dy *= math.sqrt(2)/2
         
-        if self.collide_with_walls(dx, dy):
-            print('fck')
-        else:
+        if self.healthbar.hp>0:
+        
             self.rect.x += dx
             self.rect.y += dy
 
@@ -74,8 +73,4 @@ class Player(Character):
         if self.shoot_cooldown>0:
             self.shoot_cooldown-=1
     
-    def collide_with_walls(self, dx=0, dy=0):
-        for wall in Wall.walls:
-            if wall.x == self.rect.x + dx and wall.y == self.rect.y + dy:
-                return True
-        return False
+   
