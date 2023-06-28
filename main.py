@@ -44,7 +44,7 @@ def play():
     shoot=False
 
     
-    
+
     with open('maps.json') as f:
         data = json.load(f)
         m = 0
