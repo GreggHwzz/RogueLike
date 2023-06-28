@@ -212,10 +212,10 @@ def options():
         OPTIONS_BACK = Button(image=None, pos=(SCREEN.get_width()//2, 700), 
                             text_input="RETOUR", font=get_font(75), base_color="White", hovering_color="Green")
         
-        MUSIC_OFF = Button(image=None, pos=(200,460), 
+        MUSIC_OFF = Button(image=None, pos=(400,460), 
                             text_input="MUSIC OFF", font=get_font(75), base_color="Brown", hovering_color="RED")
         
-        MUSIC_ON = Button(image=None, pos=(SCREEN.get_width()-200, 460), 
+        MUSIC_ON = Button(image=None, pos=(SCREEN.get_width()-360, 460), 
                             text_input="MUSIC ON", font=get_font(75), base_color="#007113", hovering_color="#00D123")
         
         for button in [OPTIONS_BACK,MUSIC_ON,MUSIC_OFF]:
@@ -263,7 +263,7 @@ def main_menu():
         MENU_MOUSE_POS = pygame.mouse.get_pos()
 
         PLAY_BUTTON = Button(image=pygame.image.load("assets/Play Rect.png"), pos=(SCREEN.get_width()//2, ((SCREEN.get_height()//2)-70)), 
-                            text_input="START", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
+                            text_input="PLAY", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
         OPTIONS_BUTTON = Button(image=pygame.image.load("assets/Options Rect.png"), pos=(SCREEN.get_width()//2, ((SCREEN.get_height()//2)+100)), 
                             text_input="OPTIONS", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
         QUIT_BUTTON = Button(image=pygame.image.load("assets/Options Rect.png"), pos=(SCREEN.get_width()//2,((SCREEN.get_height()//2)+290)), 
