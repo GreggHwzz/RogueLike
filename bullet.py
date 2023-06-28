@@ -1,9 +1,8 @@
 import pygame
 import pygame.sprite
-
 import constants
-import math
 from enemy import Enemy
+
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y, direction):
         super().__init__()
@@ -17,7 +16,7 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.x += self.direction[0] * self.speed  # Met à jour la position horizontale de la balle
         self.rect.y += self.direction[1] * self.speed  # Met à jour la position verticale de la balle
 
-        if self.rect.right < 0 or self.rect.left > constants.SCREEN_WIDTH:
+        if self.rect.right < 0 or self.rect.left > pygame.display.Info().current_w:
             self.kill()  # Détruit la balle si elle quitte l'écran
         self.damages()
 

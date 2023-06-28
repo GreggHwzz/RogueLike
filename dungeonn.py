@@ -1,4 +1,4 @@
-import pygame, sys, math, random, copy
+import random, copy
 from sprites import Wall, Floor
 from tilemap import Camera
 from player import Player

@@ -19,7 +19,7 @@ ecran_info = pygame.display.Info()
 largeur = ecran_info.current_w
 hauteur = ecran_info.current_h
 
-#bullet_group=pygame.sprite.Group()
+bullet_group=pygame.sprite.Group()
 
 SCREEN = pygame.display.set_mode((largeur, hauteur), pygame.FULLSCREEN)
 pygame.display.set_caption("Menu")
@@ -132,7 +132,7 @@ def play():
 
         if player.healthbar.hp <= 0:
             GAME_OVER_TEXT = get_font(100).render("Game Over", True, constants.RED)
-            GAME_OVER_RECT = GAME_OVER_TEXT.get_rect(center=(SCREEN.get_width() // 2, 200))
+            GAME_OVER_RECT = GAME_OVER_TEXT.get_rect(center=(SCREEN.get_width() // 2, 700))
             SCREEN.blit(GAME_OVER_TEXT, GAME_OVER_RECT)
             SCREEN.blit(pygame.transform.scale(pygame.image.load('assets/dinosaure/doux15.png'),(40,40)), player.rect)
 
@@ -212,10 +212,10 @@ def options():
         OPTIONS_BACK = Button(image=None, pos=(SCREEN.get_width()//2, 700), 
                             text_input="RETOUR", font=get_font(75), base_color="White", hovering_color="Green")
         
-        MUSIC_OFF = Button(image=None, pos=(600,460), 
+        MUSIC_OFF = Button(image=None, pos=(200,460), 
                             text_input="MUSIC OFF", font=get_font(75), base_color="Brown", hovering_color="RED")
         
-        MUSIC_ON = Button(image=None, pos=(SCREEN.get_width()-600, 460), 
+        MUSIC_ON = Button(image=None, pos=(SCREEN.get_width()-200, 460), 
                             text_input="MUSIC ON", font=get_font(75), base_color="#007113", hovering_color="#00D123")
         
         for button in [OPTIONS_BACK,MUSIC_ON,MUSIC_OFF]:
@@ -238,21 +238,40 @@ def options():
         
     
 def main_menu():
+    def update_text():
+        global font
+        font = pygame.font.Font("assets/font.ttf", 90)
+        text_color = "#057DC1"
+        text = "RogueLike Prototype"
+        text_surface = font.render(text, True, text_color)
+        text_rect = text_surface.get_rect()
+
+        # Positionnez le texte au centre de l'écran
+        text_rect.center = (SCREEN.get_width() // 2, 200)
+
+        # Redimensionnez le texte en fonction de la taille de l'écran
+        if text_rect.width > SCREEN.get_width() or text_rect.height > SCREEN.get_height():
+            new_font_size = int(font.size(text)[1] * min(SCREEN.get_width() / text_rect.width, SCREEN.get_height() / text_rect.height))
+            font = pygame.font.Font("assets/font.ttf", new_font_size)
+            text_surface = font.render(text, True, text_color)
+            text_rect = text_surface.get_rect()
+            text_rect.center = (SCREEN.get_width() // 2, 200)
+
+        return text_surface, text_rect
     while True:
         SCREEN.fill((1,0,0))
         MENU_MOUSE_POS = pygame.mouse.get_pos()
 
-        MENU_TEXT = get_font(100).render("Efreyan Adventures", True, "#057DC1")
-        MENU_RECT = MENU_TEXT.get_rect(center=(SCREEN.get_width()//2,200))
-
-        PLAY_BUTTON = Button(image=pygame.image.load("assets/Play Rect.png"), pos=(SCREEN.get_width()//2, ((SCREEN.get_height()//2)-100)), 
-                            text_input="COMMENCER", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
-        OPTIONS_BUTTON = Button(image=pygame.image.load("assets/Options Rect.png"), pos=(SCREEN.get_width()//2, ((SCREEN.get_height()//2)+150)), 
+        PLAY_BUTTON = Button(image=pygame.image.load("assets/Play Rect.png"), pos=(SCREEN.get_width()//2, ((SCREEN.get_height()//2)-70)), 
+                            text_input="START", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
+        OPTIONS_BUTTON = Button(image=pygame.image.load("assets/Options Rect.png"), pos=(SCREEN.get_width()//2, ((SCREEN.get_height()//2)+100)), 
                             text_input="OPTIONS", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
-        QUIT_BUTTON = Button(image=pygame.image.load("assets/Options Rect.png"), pos=(SCREEN.get_width()//2,((SCREEN.get_height()//2)+400)), 
+        QUIT_BUTTON = Button(image=pygame.image.load("assets/Options Rect.png"), pos=(SCREEN.get_width()//2,((SCREEN.get_height()//2)+290)), 
                             text_input="QUITTER", font=get_font(75), base_color="#d7fcd4", hovering_color="Red")
 
-        SCREEN.blit(MENU_TEXT, MENU_RECT)
+        text_surface, text_rect = update_text()
+        
+        SCREEN.blit(text_surface, text_rect)
 
         for button in [PLAY_BUTTON, OPTIONS_BUTTON, QUIT_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
