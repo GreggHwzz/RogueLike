@@ -19,7 +19,7 @@ class Player(Character):
         self.animation_timer = 0
         self.walkCount = 0
         self.is_moving = False
-        self.healthbar=HealthBar(50,850,200,20,max_hp)
+        self.healthbar=HealthBar(50,815,200,20,max_hp)
 
     def draw(self, surface):
         if self.is_moving:

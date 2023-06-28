@@ -3,16 +3,9 @@ import pygame, sys
 import pygame.sprite
 import constants
 from button import Button
-from character import Character
-from healthbar import HealthBar
-
-
-from bullet import Bullet
 from enemy import Enemy
 from items import Item
-from player import Player
 from dungeonn import Dungeon
-from sprites import Floor
 pygame.init()
 
 ecran_info = pygame.display.Info()
@@ -43,8 +36,6 @@ def play():
     moving_down = False
     shoot=False
 
-    
-
     with open('maps.json') as f:
         data = json.load(f)
         m = 0
@@ -61,8 +52,6 @@ def play():
     donjoonn = Dungeon()
     donjoonn.new(5)
     
-
-
     #Création de personnage
     player=donjoonn.getPlayer()
     en1= Enemy(SCREEN.get_width()-20,SCREEN.get_height()-20,100)
@@ -70,13 +59,7 @@ def play():
     
     #Création d'items
     health_potion= Item(SCREEN.get_width()-100,100, "health", "assets/potion.png")
-    
 
-
-
-    
-   
-    
     while True:
         clock.tick(constants.FPS)
     
@@ -104,8 +87,6 @@ def play():
             
             player.shoot()
         
-
-    
         #Mouvement du personnage 
         player.move(dx,dy)
         for enemy in Enemy.enemies_group:
@@ -145,9 +126,7 @@ def play():
                     del health_potion
                     health_potion = None
                 else:  health_potion.draw(SCREEN)
-            
-       
-    
+                
         for button in [EXIT_BUTTON, BACK_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
             button.update(SCREEN)
