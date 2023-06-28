@@ -1,17 +1,17 @@
 import random, copy
 from sprites import Wall, Floor
-from tilemap import Camera
+
 from player import Player
 
 import constants
 
 class Dungeon(object):
-    """docstring for Dungeon."""
+    
 
     def __init__(self):
         self.dungeon = []
         
-        self.camera=Camera(32 * 32 * 5, 32 * 32 * 5)
+       
         
 
     def new(self, dungeonSize):
@@ -115,10 +115,10 @@ class Dungeon(object):
 
     def draw(self,SCREEN):
         for sprite in Floor.floors:
-            SCREEN.blit(sprite.image,  self.camera.apply(sprite))
+            SCREEN.blit(sprite.image,  sprite.rect)
         for sprite in Wall.walls:
             
-            SCREEN.blit(sprite.image,  self.camera.apply(sprite))
+            SCREEN.blit(sprite.image,  sprite.rect)
 
     def newPlayer(self):
         print (Wall.walls)
